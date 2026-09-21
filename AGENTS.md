@@ -43,24 +43,7 @@ The permission system is the security boundary on broker financial data. A bypas
 ## Database access
 
 - The Management API over HTTPS. The direct Postgres connection fails on this IPv4-only network.
-- CLI: the authenticated one in sibling `cloud-key-opener`, else one installed here. Never `npx`.
-- Reviewed read-only SQL:
-
-```powershell
-$previousSupabaseDbPassword = $env:SUPABASE_DB_PASSWORD
-try {
-    $env:SUPABASE_DB_PASSWORD = 'unused-for-management-api'
-    .\node_modules\.bin\supabase.cmd db query --linked `
-        --project-ref <ref> --file <read-only-sql-file>
-    if ($LASTEXITCODE -ne 0) { throw 'Supabase query failed' }
-} finally {
-    $env:SUPABASE_DB_PASSWORD = $previousSupabaseDbPassword
-}
-```
-
-- The placeholder password is not a credential. It only avoids the CLI login-role stall. Never store it.
-- That route cannot migrate: the API opens a read-only transaction, so DDL fails with `25006`.
-- Combine checks into one result set. Only the last is returned.
+- Use the makefile commands
 
 ## Migrations
 
