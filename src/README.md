@@ -1,16 +1,15 @@
-# Source Code Directory
+# Source Directory
 
 ## Overview
-The `src/` directory contains the main source code for the project. This is where all the primary development happens, and it should include all the logic necessary to run the project.
+The application's own code. Everything the project does lives here; scripts that only drive tasks belong in [`../scripts/`](../scripts/README.md).
 
 ## Structure
-- **main.py**: The main entry point for the program.
-- **modules/**: Folder for project-specific modules or packages.
-- **utils/**: Utility scripts and helper functions.
+- **Entry point**: one file at the top, named by the stack's convention.
+- **modules/**: project-specific modules or packages.
+- **utils/**: helpers shared across modules.
 
 ## Guidelines
-- Maintain clean and well-commented code throughout.
-- Follow the project's coding standards and style guide.
-
-## Usage
-This directory's structure should be modular, allowing for easy expansion and maintenance. Code should be self-explanatory where possible, with comments added for complex logic.
+- Keep it modular. Name things so the code explains itself; comment the parts that cannot.
+- Database access follows [`../AGENTS.md`](../AGENTS.md): `PROJECT_SCHEMA` only, `PROJECT_PREFIX` on every object, `public` read-only, and soft deletes filtered with `and "_meta/op" != 'd'`.
+- Never trust a client-supplied broker ID. Filter every query by the user's permitted IDs and check the deny flags.
+- Credentials come from the environment, never from committed files.

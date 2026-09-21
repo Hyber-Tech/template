@@ -1,17 +1,20 @@
 # Tests Directory
 
 ## Overview
-The `tests/` directory contains automated test scripts designed to verify the functionality and performance of the codebase. It includes unit tests, integration tests, and other types of test cases.
+Automated tests for the codebase: unit, integration, and regression.
 
 ## Structure
-- **unit/**: Unit tests for individual components.
-- **integration/**: Tests that cover multiple components working together.
-- **fixtures/**: Common test data and setups used across multiple test cases.
+- **unit/**: tests for individual components.
+- **integration/**: tests across components.
+- **fixtures/**: shared test data.
+- **\*.test.mjs**: offline database tests, run by `make db-test`. None yet — the target says so and exits 0.
 
 ## Guidelines
-- Write tests for all new code where feasible.
-- Keep tests up-to-date as changes are made to the codebase.
-- Ensure that tests are clear and cover as many cases as possible.
+- Write tests for new code where feasible. Keep them current and readable.
+- Application tests use your stack's own runner. Add a make target for them; `db-test` covers the database tooling only.
+- Database tests run offline. Inject the query function instead of calling a project; use an in-process Postgres (`npm i --no-save @electric-sql/pglite`) if a test needs real SQL.
+- Tests never touch a production Supabase project. Anything needing one gets its own named target, never the default run.
+- Tests never write outside `PROJECT_SCHEMA`.
 
 ## Usage
-Run tests regularly to ensure that code changes do not break existing functionality. Integrate with CI/CD pipelines for automated testing.
+Run them before finishing a change, and in CI.
